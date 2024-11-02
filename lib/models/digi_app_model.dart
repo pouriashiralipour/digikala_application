@@ -6,7 +6,7 @@ class DigiAppModel {
   static final List<DigiAppModel> items = [
     DigiAppModel(title: 'دریافت وام', img: 'assets/digi_app/d1.png'),
     DigiAppModel(title: 'بومی ومحلی', img: 'assets/digi_app/d2.jpg'),
-    DigiAppModel(title: 'سوپرمارکت پرتخفیف', img: 'assets/digi_app/d3.png'),
+    DigiAppModel(title: 'سوپرمارکت \nپرتخفیف', img: 'assets/digi_app/d3.png'),
     DigiAppModel(title: 'دعوت میلیونی', img: 'assets/digi_app/d4.png'),
     DigiAppModel(title: 'جایزه پلاس', img: 'assets/digi_app/d5.png'),
     DigiAppModel(title: 'دیجی کالا مهر', img: 'assets/digi_app/d6.png'),

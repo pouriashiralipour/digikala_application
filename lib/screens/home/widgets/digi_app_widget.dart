@@ -13,72 +13,69 @@ class CustomDigiApp extends StatelessWidget {
           Row(
             children: List.generate(
               DigiAppModel.items.length - 1,
-              (index) {
-                final app = DigiAppModel.items[index];
-                return DigiAppTile(app: app);
-              },
+              (index) => Column(
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: 73,
+                        height: 73,
+                        padding: const EdgeInsets.all(3),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 15),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      CircleAvatar(
+                        backgroundImage:
+                            AssetImage(DigiAppModel.items[index].img),
+                        radius: 30,
+                      ),
+                    ],
+                  ),
+                  Text(
+                    DigiAppModel.items[index].title,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 30),
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: 60,
-                    height: 60,
+          Column(
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 73,
+                    height: 73,
+                    margin: const EdgeInsets.symmetric(vertical: 15),
                     decoration: const BoxDecoration(
-                      color: Colors.white,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
-                      Icons.more_horiz,
-                      color: Color(0xFF62666d),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: const CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Color(0xFFF0F0F1),
+                      child: Icon(Icons.more_horiz),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 3,
-                ),
-                const Text(
-                  'بیشتر',
-                  style: TextStyle(color: Color(0xFF424750)),
-                )
-              ],
-            ),
+                ],
+              ),
+              const Text(
+                'بیشتر',
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class DigiAppTile extends StatelessWidget {
-  const DigiAppTile({super.key, required this.app});
-
-  final DigiAppModel app;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 110,
-      height: 110,
-      child: Column(
-        children: [
-          Image.asset(
-            app.img,
-            width: 60,
-            height: 60,
-          ),
-          const SizedBox(
-            height: 3,
-          ),
-          Text(
-            app.title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Color(0xFF424750)),
-          )
         ],
       ),
     );
