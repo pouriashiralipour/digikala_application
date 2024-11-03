@@ -116,7 +116,7 @@ class StoryDisplay extends StatefulWidget {
   final int storyIndex;
   final VoidCallback onClose;
 
-  const StoryDisplay({required this.storyIndex, required this.onClose});
+  const StoryDisplay({super.key, required this.storyIndex, required this.onClose});
 
   @override
   _StoryDisplayState createState() => _StoryDisplayState();

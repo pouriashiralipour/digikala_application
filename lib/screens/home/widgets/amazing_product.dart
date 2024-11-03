@@ -1,31 +1,38 @@
+import 'dart:async';
+
 import 'package:digikala/models/amazing_product_model.dart';
+import 'package:digikala/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AmazingProduct extends StatelessWidget {
-  const AmazingProduct({super.key});
-
+  final Color color1, color2;
+  final List model;
+  const AmazingProduct(
+      {super.key,
+      required this.color1,
+      required this.color2,
+      required this.model});
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
       height: size.height / 2.5,
       padding: const EdgeInsets.symmetric(vertical: 24.0),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: [Color(0xffef4056), Color(0xffef394e)],
+              colors: [color1, color2],
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter)),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children:
-              List.generate(AmazingProductModel.items.length + 2, (index) {
-            final amazing =
-                AmazingProductModel.items[index < 3 ? index : index - 3];
+          children: List.generate(model.length + 2, (index) {
+            final amazing = model[index < 3 ? index : index - 3];
             return index == 0
                 ? FirstOfferTile(size: size)
-                : index == AmazingProductModel.items.length + 1
+                : index == model.length + 1
                     ? GestureDetector(
                         onTap: () {},
                         child: Container(
@@ -40,7 +47,7 @@ class AmazingProduct extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.arrow_circle_left_outlined,
-                                color: Color(0xffef4056),
+                                color: Color(0xffDF324E),
                                 size: 50,
                               ),
                               Text(
@@ -74,10 +81,10 @@ class FirstOfferTile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            const CountdownTimer(),
+            const Spacer(),
             SvgPicture.asset('assets/svg/Amazings.svg'),
-            const SizedBox(
-              height: 20,
-            ),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.only(right: 27),
               child: Row(
@@ -103,14 +110,14 @@ class FirstOfferTile extends StatelessWidget {
 
 class AmazingProductTile extends StatelessWidget {
   const AmazingProductTile({super.key, required this.amazing});
-  final AmazingProductModel amazing;
+  final ProductModel amazing;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.all(12.0),
       margin: const EdgeInsets.only(right: 8.0),
-      width: size.width / 2.8,
+      width: size.width / 2.7,
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(8.0)),
       child: Column(
@@ -189,23 +196,158 @@ class AmazingProductTile extends StatelessWidget {
       ),
     );
   }
+}
 
-  String convertEnglishNumbersToPersian(String input) {
-    const englishToPersian = {
-      '0': '۰',
-      '1': '۱',
-      '2': '۲',
-      '3': '۳',
-      '4': '۴',
-      '5': '۵',
-      '6': '۶',
-      '7': '۷',
-      '8': '۸',
-      '9': '۹',
-    };
+class CountdownTimer extends StatefulWidget {
+  const CountdownTimer({super.key});
 
-    return input.split('').map((char) {
-      return englishToPersian[char] ?? char;
-    }).join('');
+  @override
+  _CountdownTimerState createState() => _CountdownTimerState();
+}
+
+class _CountdownTimerState extends State<CountdownTimer> {
+  int hours = 0;
+  int minutes = 0;
+  int seconds = 0;
+  Timer? timer;
+  DateTime? endTime;
+
+  @override
+  void initState() {
+    super.initState();
+    loadEndTime();
+    // startTimer();
   }
+
+  void startTimer() {
+    if (endTime == null) {
+      endTime = DateTime.now()
+          .add(const Duration(hours: 23, minutes: 59, seconds: 59));
+      saveEndTime();
+    }
+
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        final remaining = endTime!.difference(DateTime.now());
+        if (remaining.isNegative) {
+          timer.cancel();
+        } else {
+          hours = remaining.inHours;
+          minutes = remaining.inMinutes % 60;
+          seconds = remaining.inSeconds % 60;
+        }
+      });
+    });
+  }
+
+  Future<void> resetTimer() async {
+    final prefs = await SharedPreferences.getInstance();
+    endTime =
+        DateTime.now().add(const Duration(hours: 15, minutes: 5, seconds: 16));
+    await prefs.setString('endTime', endTime!.toIso8601String());
+    startTimer();
+  }
+
+  Future<void> saveEndTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('endTime', endTime!.toIso8601String());
+  }
+
+  Future<void> loadEndTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    final endTimeString = prefs.getString('endTime');
+
+    if (endTimeString != null) {
+      endTime = DateTime.parse(endTimeString);
+      if (endTime!.isAfter(DateTime.now())) {
+        startTimer();
+      } else {
+        endTime = null;
+        startTimer();
+      }
+    } else {
+      startTimer();
+    }
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildTimeBox(convertEnglishNumbersToPersian(
+                seconds.toString().padLeft(2, '0'))),
+            const SizedBox(
+              width: 5,
+            ),
+            const Text(":",
+                style: TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            const SizedBox(
+              width: 5,
+            ),
+            buildTimeBox(convertEnglishNumbersToPersian(
+                minutes.toString().padLeft(2, '0'))),
+            const SizedBox(
+              width: 5,
+            ),
+            const Text(":",
+                style: TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            const SizedBox(
+              width: 5,
+            ),
+            buildTimeBox(convertEnglishNumbersToPersian(
+                hours.toString().padLeft(2, '0'))),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildTimeBox(String time) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        time,
+        style: const TextStyle(
+            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+      ),
+    );
+  }
+}
+
+String convertEnglishNumbersToPersian(String input) {
+  const englishToPersian = {
+    '0': '۰',
+    '1': '۱',
+    '2': '۲',
+    '3': '۳',
+    '4': '۴',
+    '5': '۵',
+    '6': '۶',
+    '7': '۷',
+    '8': '۸',
+    '9': '۹',
+  };
+
+  return input.split('').map((char) {
+    return englishToPersian[char] ?? char;
+  }).join('');
 }

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
       ],
-      title: 'DigiKala',
+      title: 'DigiKalaApp',
       theme: ThemeData(
         fontFamily: 'IranYekanFont',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

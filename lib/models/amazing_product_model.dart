@@ -1,5 +1,17 @@
-class AmazingProductModel {
-  final String title, image, price, oldPrice, discount;
+import 'package:digikala/models/product_model.dart';
+
+class AmazingProductModel implements ProductModel {
+  @override
+  final String title;
+  @override
+  final String image;
+  @override
+  final String discount;
+  @override
+  final String price;
+  @override
+  final String oldPrice;
+  @override
   final bool isAvalaible;
 
   AmazingProductModel(
