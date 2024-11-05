@@ -10,9 +10,14 @@ import 'package:digikala/screens/home/widgets/custom_slider.dart';
 import 'package:digikala/screens/home/widgets/story_circle.dart'
     show StoryCircle;
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +83,9 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const CategorySection(),
+              const SizedBox(
+                height: 500,
+              )
             ],
           ),
         ),

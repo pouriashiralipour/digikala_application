@@ -5,7 +5,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
   @override
-  Size get preferredSize => const Size.fromHeight(56.0);
+  Size get preferredSize => const Size.fromHeight(65.0);
 
   @override
   _CustomAppBarState createState() => _CustomAppBarState();
@@ -138,38 +138,45 @@ class _CustomAppBarState extends State<CustomAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      elevation: 0,
+      elevation: 10,
+      shadowColor: Colors.grey,
       title: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           color: const Color(0xFFF0F0F1),
         ),
-        child: TextFormField(
-          onTap: _showSearchOverlay,
-          readOnly: true,
-          decoration: InputDecoration(
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide.none,
-            ),
-            prefixIcon: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.search, color: Color(0xFF424750), size: 24),
-                  const SizedBox(width: 12),
-                  const Text(
-                    "جستجو در",
-                    style: TextStyle(color: Color(0xFF62666d)),
-                  ),
-                  const SizedBox(width: 6),
-                  SvgPicture.asset(
-                    'assets/svg/logo.svg',
-                    width: 60,
-                  ),
-                ],
+        child: Container(
+          decoration: BoxDecoration(
+              color: const Color(0xffA1A3A8).withOpacity(0.25),
+              borderRadius: BorderRadius.circular(8)),
+          child: TextFormField(
+            onTap: _showSearchOverlay,
+            readOnly: true,
+            decoration: InputDecoration(
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide.none,
+              ),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.search_rounded,
+                        color: Color(0xFF424750), size: 30),
+                    const SizedBox(width: 12),
+                    const Text(
+                      "جستجو در",
+                      style: TextStyle(color: Color(0xFF62666d)),
+                    ),
+                    const SizedBox(width: 6),
+                    SvgPicture.asset(
+                      'assets/svg/logo.svg',
+                      width: 80,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

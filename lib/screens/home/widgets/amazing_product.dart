@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:digikala/models/amazing_product_model.dart';
 import 'package:digikala/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -127,7 +126,7 @@ class AmazingProductTile extends StatelessWidget {
           const Spacer(),
           Text(
             amazing.title,
-            style: const TextStyle(fontSize: 13),
+            style: const TextStyle(fontSize: 11),
             textAlign: TextAlign.justify,
           ),
           const Spacer(),
@@ -189,7 +188,10 @@ class AmazingProductTile extends StatelessWidget {
               const SizedBox(
                 width: 4,
               ),
-              const Text('تومان'),
+              SvgPicture.asset(
+                'assets/svg/toman.svg',
+                width: 21,
+              ),
             ],
           )
         ],

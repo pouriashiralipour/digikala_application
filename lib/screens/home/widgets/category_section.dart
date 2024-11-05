@@ -22,25 +22,36 @@ class CategorySection extends StatelessWidget {
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
+                  crossAxisCount: 3,
+                ),
                 itemCount: CategoryModel.items.length,
                 itemBuilder: (context, index) {
+                  final item = CategoryModel.items[index];
                   return Column(
                     children: [
-                      Container(
-                        margin: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Image.network(
-                            CategoryModel.items[index].img,
-                            fit: BoxFit.cover,
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            margin: const EdgeInsets.all(
+                                10.0), // حاشیه را کمی کمتر کردیم
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.network(
+                                item.img,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      Text(CategoryModel.items[index].title)
+                      Text(
+                        item.title,
+                        textAlign: TextAlign.center,
+                      ),
                     ],
                   );
                 },
